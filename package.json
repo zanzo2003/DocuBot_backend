@@ -1,0 +1,27 @@
+{
+  "name": "docubot_backend",
+  "version": "1.0.0",
+  "description": "Node.js backend for docubot application",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon server.js"
+  },
+  "keywords": [
+    "rag",
+    "genai",
+    "vector_data",
+    "llm",
+    "nodejs"
+  ],
+  "author": "Shashwath Bhaskar",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "openai": "^5.15.0"
+  }
+}
