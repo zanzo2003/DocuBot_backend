@@ -2,11 +2,12 @@
   "name": "docubot_backend",
   "version": "1.0.0",
   "description": "Node.js backend for docubot application",
-  "main": "server.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon server.js"
+    "dev": "nodemon src/server.js"
   },
   "keywords": [
     "rag",
@@ -18,10 +19,12 @@
   "author": "Shashwath Bhaskar",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "multer": "^2.0.2",
     "nodemon": "^3.1.10",
-    "openai": "^5.15.0"
+    "openai": "^5.15.0",
+    "path": "^0.12.7"
   }
 }
