@@ -29,4 +29,7 @@ const upload = multer({
 
         cb(`FileUploadError: File upload only supports the following filetypes - ${fileType}`)
     }
-}).single('mufile');
+}).single('file');
+
+
+export {upload};

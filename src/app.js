@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import { upload } from "./middleware/multer.middleware";
 const app = express();
 
 
@@ -24,6 +24,8 @@ const corsConfig = {
 // middleware config
 
 app.use(cors(corsConfig));
+
+
 
 
 export {app}
