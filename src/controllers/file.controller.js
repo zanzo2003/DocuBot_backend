@@ -32,6 +32,7 @@ const fileDelete = asyncHandler( async(req, res)=>{
     try{
         const fileName = req.params.fileName;
         const response = await deleteFile(fileName);
+        
         res.status(200).json(
             new ApiResponse(200, response, response.message)
         );

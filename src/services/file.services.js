@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { ApiErrorResponse } from '../utlis/ApiErrorResponse.js';
-
+import { deleteChunks } from '../db/db.js';
+import { getEmbeddingModal } from '../utlis/langchainTools.js';
 
 const uploadFile = async (file) => {
     try {
@@ -37,6 +37,9 @@ const deleteFile = async (fileName) => {
 
         // Delete file
         await fs.unlink(filePath);
+
+        // Delete the chunks
+        await deleteChunks(await getEmbeddingModal(), filePath);
 
         return { success: true, message: "File deleted successfully" };
     } catch (error) {

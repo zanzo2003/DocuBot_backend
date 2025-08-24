@@ -20,7 +20,7 @@ async function indexDocument(chunks, embeddingModel){
 }
 
 
-async function retrieveChunks(filePath, embeddings, noOfRelaventChunks, userQuery){
+async function retrieveChunks(filePath, embeddings, noOfRelaventChunks , userQuery){
 
     const filter = {
         must: [{ key: "metadata.source", match: { value: filePath } }]
@@ -40,9 +40,36 @@ async function retrieveChunks(filePath, embeddings, noOfRelaventChunks, userQuer
     })
 
     const result = await vectorSearch.invoke(userQuery);
+
     return result;
 }
 
 
 
-export {retrieveChunks, indexDocument};
+async function deleteChunks(filePath, embeddings){
+
+    const filter = {
+        must: [{ key: "metadata.source", match: { value: filePath } }]
+    }
+
+    const vectorStore = await QdrantVectorStore.fromExistingCollection(
+        embeddings,
+        {
+            url: process.env.DB_URI,
+            collectionName: process.env.COLLECTION_NAME
+        }
+    )
+
+
+    const deletedChunks = vectorStore.delete({
+        filter: filter
+    })
+
+    return deletedChunks;
+    
+}
+
+
+
+
+export {retrieveChunks, indexDocument, deleteChunks};

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import fileRoutes from "./routes/file.routes.js"; 
 import { errorHandler } from "./middleware/globalError.middleware.js"
+import chatRoutes from "./routes/chat.routes.js";
 
 
 const app = express();
@@ -25,13 +26,15 @@ const corsConfig = {
 
 
 // middleware config
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(cors(corsConfig));
 app.use(errorHandler)
 
 
 // mount the routes
-app.use("/", fileRoutes);   // 👈 this makes /file available
+app.use("/", fileRoutes);  
+app.use("/",chatRoutes);
 
 
 export {app}
