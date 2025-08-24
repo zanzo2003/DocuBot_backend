@@ -2,6 +2,9 @@ import "dotenv/config";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 
+
+
+
 async function getEmbeddingModal(){
 
     const embeddings = new GoogleGenerativeAIEmbeddings({
@@ -10,6 +13,8 @@ async function getEmbeddingModal(){
     });
     return embeddings;
 }
+
+
 
 async function readFileAndLoadChunks( filePath ){
 
@@ -23,3 +28,6 @@ async function readFileAndLoadChunks( filePath ){
     }
 
 }
+
+
+export { getEmbeddingModal, readFileAndLoadChunks};

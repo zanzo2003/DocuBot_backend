@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
-import { upload } from "./middleware/multer.middleware";
+import fileRoutes from "./routes/file.routes.js"; 
+import { errorHandler } from "./middleware/globalError.middleware.js"
+
+
 const app = express();
 
 
@@ -12,9 +15,9 @@ const allowedOriginList = process.env.ALLOWED_ORIGINS ?
 
 const corsConfig = {
     methods: ['POST', 'GET', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Accept', 'Origin', 'X-Requested-With'],
+    //allowedHeaders: ['Content-Type', 'Accept', 'Origin', 'X-Requested-With'],
     origin: function (origin, callback){
-        if( allowedOriginList.indexOf(origin) != -1 || !origin) return callback(null, true);
+        if( allowedOriginList.length == 0 || allowedOriginList.indexOf(origin) != -1 || !origin) return callback(null, true);
         else return callback(new Error('Not allowed by CORS'))
     }
 }
@@ -24,8 +27,11 @@ const corsConfig = {
 // middleware config
 
 app.use(cors(corsConfig));
+app.use(errorHandler)
 
 
+// mount the routes
+app.use("/", fileRoutes);   // 👈 this makes /file available
 
 
 export {app}

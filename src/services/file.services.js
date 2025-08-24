@@ -1,7 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { ApiError } from '../utlis/ApiErrorResponse.js';
-import { indexDocument } from '../db/db';
+import { ApiErrorResponse } from '../utlis/ApiErrorResponse.js';
 
 
 const uploadFile = async (file) => {
@@ -24,7 +23,7 @@ const uploadFile = async (file) => {
 
         return fileDetails;
     } catch (error) {
-        throw new ApiError(500, `Error in file upload service: ${error.message}`);
+        throw new Error(`Error in file upload service: ${error.message}`);
     }
 };
 
@@ -42,13 +41,28 @@ const deleteFile = async (fileName) => {
         return { success: true, message: "File deleted successfully" };
     } catch (error) {
         if (error.code === 'ENOENT') {
-            throw new ApiError(404, "File not found");
+            throw new Error("File not found");
         }
-        throw new ApiError(500, `Error in file deletion service: ${error.message}`);
+        throw new Error(`Error in file deletion service: ${error.message}`);
     }
 };
 
+
+const getFile = async (fileName)=>{
+    try{
+        const filePath = path.join(path.resolve('./uploads'), fileName);
+        await fs.access(filePath);
+        return filePath;
+    }catch(error){
+        if (error.code === 'ENOENT') {
+            throw new Error("File not found");
+        }
+        throw new Error(`Error retriving file: ${error.message}`);
+    }
+}
+
 export {
     uploadFile,
-    deleteFile
+    deleteFile,
+    getFile
 };

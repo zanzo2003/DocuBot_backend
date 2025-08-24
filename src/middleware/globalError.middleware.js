@@ -1,4 +1,4 @@
-import { ApiErrorResponse } from "../utlis/ApiErrorResponse";
+import { ApiErrorResponse } from "../utlis/ApiErrorResponse.js";
 
 const errorHandler = (err, req, res, next)=>{
 
@@ -19,4 +19,4 @@ const errorHandler = (err, req, res, next)=>{
     return res.status(200).json(response)
 }
 
-export {errorHandler};
+export { errorHandler };
