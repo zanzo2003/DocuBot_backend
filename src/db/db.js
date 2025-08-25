@@ -3,7 +3,7 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 import "dotenv/config";
 
 
-async function indexDocument(chunks, embeddingModel){
+async function indexDocument(chunks, embeddingModel) {
 
     try {
         const vectorStore = await QdrantVectorStore.fromDocuments(
@@ -21,7 +21,7 @@ async function indexDocument(chunks, embeddingModel){
 }
 
 
-async function retrieveChunks(filePath, embeddings, noOfRelaventChunks , userQuery){
+async function retrieveChunks(filePath, embeddings, noOfRelaventChunks, userQuery) {
 
     const filter = {
         must: [{ key: "metadata.source", match: { value: filePath } }]
@@ -47,42 +47,37 @@ async function retrieveChunks(filePath, embeddings, noOfRelaventChunks , userQue
 
 
 
-async function deleteChunks(filePath, embeddings){
+async function deleteChunks(filePath, embeddings) {
 
     try {
 
-        console.log("Attributes: " , filePath);
+        const filter = {
+            must: [{ key: "metadata.source", match: { value: filePath } }]
+        }
 
-        const client = new QdrantClient({
-            url: process.env.DB_URI
-        })
-
-
-        const result = await client.delete(
-            process.env.COLLECTION_NAME,
+        const vectorStore = await QdrantVectorStore.fromExistingCollection(
+            embeddings,
             {
-                filter: {
-                    must: [
-                        {
-                            key: "metadata.source",
-                            match: { value: filePath },
-                        }
-                    ]
-                }
+                url: process.env.DB_URI,
+                collectionName: process.env.COLLECTION_NAME
             }
         )
 
-        console.log("Delete operation result : ", result)
-    
-        return result;
+
+        const deletedChunks = await vectorStore.delete({
+            filter: filter
+        })
+
+        return deletedChunks;
+
     } catch (error) {
         console.error("Error in while delete chunks : ", error);
         throw new Error(error.message);
     }
-    
+
 }
 
 
 
 
-export {retrieveChunks, indexDocument, deleteChunks};
+export { retrieveChunks, indexDocument, deleteChunks };
