@@ -1,4 +1,5 @@
 import { QdrantVectorStore } from "@langchain/qdrant";
+import { QdrantClient } from "@qdrant/js-client-rest";
 import "dotenv/config";
 
 
@@ -48,24 +49,36 @@ async function retrieveChunks(filePath, embeddings, noOfRelaventChunks , userQue
 
 async function deleteChunks(filePath, embeddings){
 
-    const filter = {
-        must: [{ key: "metadata.source", match: { value: filePath } }]
+    try {
+
+        console.log("Attributes: " , filePath);
+
+        const client = new QdrantClient({
+            url: process.env.DB_URI
+        })
+
+
+        const result = await client.delete(
+            process.env.COLLECTION_NAME,
+            {
+                filter: {
+                    must: [
+                        {
+                            key: "metadata.source",
+                            match: { value: filePath },
+                        }
+                    ]
+                }
+            }
+        )
+
+        console.log("Delete operation result : ", result)
+    
+        return result;
+    } catch (error) {
+        console.error("Error in while delete chunks : ", error);
+        throw new Error(error.message);
     }
-
-    const vectorStore = await QdrantVectorStore.fromExistingCollection(
-        embeddings,
-        {
-            url: process.env.DB_URI,
-            collectionName: process.env.COLLECTION_NAME
-        }
-    )
-
-
-    const deletedChunks = vectorStore.delete({
-        filter: filter
-    })
-
-    return deletedChunks;
     
 }
 

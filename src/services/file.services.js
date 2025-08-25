@@ -30,7 +30,7 @@ const uploadFile = async (file) => {
 
 const deleteFile = async (fileName) => {
     try {
-        const filePath = path.join('./uploads', fileName);
+        const filePath = 'uploads/' + fileName;
 
         // Check if file exists
         await fs.access(filePath);
@@ -39,7 +39,8 @@ const deleteFile = async (fileName) => {
         await fs.unlink(filePath);
 
         // Delete the chunks
-        await deleteChunks(await getEmbeddingModal(), filePath);
+        const embedding = await getEmbeddingModal();
+        await deleteChunks(filePath, embedding);
 
         return { success: true, message: "File deleted successfully" };
     } catch (error) {

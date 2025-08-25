@@ -59,7 +59,7 @@ const fileGet = asyncHandler( async(req, res)=>{
     // stream file so browser can preview
     return res.sendFile(filePath);
   } catch (error) {
-    return ApiResponse(error.status, ApiErrorResponse(error.status, error.message, error?.error || [], error.stack), error);
+    return new ApiResponse(error.status, new ApiErrorResponse(error.status, error.message, error?.error || [], error.stack), error);
   }
 })
 

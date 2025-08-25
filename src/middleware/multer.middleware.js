@@ -8,8 +8,9 @@ const storage = multer.diskStorage({
         cb(null, './uploads')
     },
     filename: function(req, file, cb){
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() + 1E9)}`;
-        cb(null, `${file.fieldname}-${uniqueSuffix}`);
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+        const ext = path.extname(file.originalname).toLowerCase(); // Get original file extension
+        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
     }
 })
 
@@ -23,7 +24,7 @@ const upload = multer({
         const mimeType = fileType.test(file.mimetype);
         const extname = fileType.test(path.extname(file.originalname).toLowerCase());
 
-        if( mimeType & extname){
+        if( mimeType && extname){
             return cb(null, true);
         }
 
