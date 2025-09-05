@@ -35,30 +35,32 @@ async function readFileAndLoadChunks(filePath) {
 }
 
 
+let promptMessages = [
+    {
+        role: "system",
+        content: "system_prompt",
+    }
+]
 
 async function callAI(context, userQuery) {
 
     const SYSTEM_PROMPT = await getGenericAiChatPrompt(context);
-
-
+    promptMessages[0].content = SYSTEM_PROMPT;
+    console.log("Chats : ", promptMessages)
 
     try {
+        promptMessages.push( {
+                    role: "user",
+                    content: userQuery,
+                });
         const response = await openai.chat.completions.create({
             model: "gemini-2.5-flash",
             response_format: { type: "text" },
             reasoning_effort: "high",
-            messages: [
-                {
-                    role: "system",
-                    content: SYSTEM_PROMPT,
-                },
-                {
-                    role: "user",
-                    content: userQuery,
-                },
-            ],
+            messages: promptMessages,
         });
-    
+
+        promptMessages.push( {role: "assistant", content: response.choices[0].message.content});
         return response.choices[0].message.content;
     } catch (error) {
         console.log("Error calling AI : ", error);
