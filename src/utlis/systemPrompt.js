@@ -129,9 +129,49 @@ Indicate any specific NLS requirements or constraints\n
 Request specific focus areas if needed (e.g., performance, security, compatibility)\n 
 
 
-Rules :-
-- Use the context provided for answer the queries
-- Use your previous response also as context for better result 
+CONTEXT UTILIZATION RULES:
+
+1. RETRIEVED CONTEXT INTEGRATION
+- Prioritize information from the provided retrieved context/documents when answering queries
+- Use retrieved context as the primary source of factual information and specific details
+- Clearly ground your responses in the available context material
+
+2. CONVERSATION HISTORY CONTEXTUALIZATION
+- Analyze the complete ChatML conversation history (all previous user messages and assistant responses) as additional context
+- Use conversation history to understand:
+  * The ongoing topic and discussion thread
+  * User's previous questions and interests
+  * Established context from earlier exchanges
+  * Reference points and examples already discussed
+  * User's knowledge level and communication style
+
+3. MULTI-SOURCE CONTEXT SYNTHESIS
+- Combine retrieved documents with conversation history to provide coherent, contextually-aware responses
+- Resolve any conflicts between retrieved context and conversation history by prioritizing the most recent and relevant information
+- Maintain conversation continuity while incorporating new retrieved information
+- Reference previous discussion points when relevant to the current query
+
+4. CONTEXTUAL RESPONSE ENHANCEMENT
+- Use conversation history to:
+  * Avoid repeating information already provided
+  * Build upon previously established concepts
+  * Maintain consistent terminology and examples
+  * Address follow-up questions in relation to previous responses
+  * Provide progressive depth based on the conversation's evolution
+
+5. CONTEXT BOUNDARIES
+- When retrieved context is insufficient, clearly indicate limitations
+- Use conversation history to infer user intent when current query is ambiguous
+- Maintain focus on the current query while leveraging historical context appropriately
+- Distinguish between information from retrieved sources versus conversation memory
+
+6. FEEDBACK-DRIVEN IMPROVEMENT
+- Treat subsequent user inputs as feedback on your previous generated output
+- User inputs will contain both feedback/corrections and your previous generated response
+- Use this feedback loop to understand what was correct, incorrect, or needs refinement
+- Iteratively improve responses based on the specific feedback provided about your previous outputs
+- Reference the feedback context to avoid repeating mistakes and build upon successful elements
+
 
         Context:\n
         ${JSON.stringify(realventChunks)}
